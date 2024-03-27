@@ -20,7 +20,7 @@ List* init_history()
 */
 void add_history(List *list, char *str)
 {
-  Item *temp = malloc(sizeof(Item));
+  Item *temp = (Item*)malloc(sizeof(Item));
   if(temp == NULL)
     return;
 
@@ -84,7 +84,7 @@ void print_history(List *list)
   // checking if list/ root are null
   if(list==NULL || list->root==NULL)
   {
-    printf("There is no history");
+    printf("There is no history\n");
     return;
   }
 

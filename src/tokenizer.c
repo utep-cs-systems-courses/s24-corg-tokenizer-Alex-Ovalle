@@ -111,7 +111,7 @@ char **tokenize(char* str)
     token = token_terminator(token);
   }
 
-  tokens[token_count] = "\0";
+  tokens[token_count] = '\0';
   return tokens;
 }
 
