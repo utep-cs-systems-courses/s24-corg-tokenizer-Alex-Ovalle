@@ -7,8 +7,8 @@
 List* init_history()
 {
   List *token_hist = (List*)malloc(sizeof(List));
-  if(token_history!=NULL)
-    token_history -> root = NULL;
+  if(token_hist!=NULL)
+    token_hist -> root = NULL;
 
   return token_hist;
 }
@@ -70,7 +70,7 @@ char *get_history(List *list, int id)
     // if node id matches the one given, we return the str attached to it
     if(temp->id == id)
       return temp->str;
-    temp = temp.next
+    temp = temp->next;
   }
   // if not found return null
   return NULL;
@@ -88,6 +88,7 @@ void print_history(List *list)
     return;
   }
 
+  Item *temp = list->root;
   while(temp != NULL)
   {
     printf("ID[:%d]: %s\n", temp->id, temp->str);
@@ -111,5 +112,3 @@ void free_history(List *list)
   free(list);
 }
 
-
-#endif

@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "tokenizer.h"
+
 int space_char(char c)
 {
   if (c == '\t' || c == ' ')
@@ -24,15 +28,11 @@ int non_space_char(char c)
    str does not contain any tokens. */
 char *token_start(char *str)
 {
-  while(*str != '\0' && space_char(*str))
-    {
-      str++;
-    }
-  if(*str == '\0')
-    {
-      return 0;
-    }
- return str;
+  int i = 0;
+  while(space_char(str[i]))
+      i++;
+  
+  return str + i;
 }
 
 /* Returns a pointer terminator char following *token */
@@ -48,13 +48,24 @@ char *token_terminator(char *token)
 /* Counts the number of tokens in the string argument. */
 int count_tokens(char *str)
 {
-  counter = 0;
-  while(*token_start(*str) != 0)
+  int token_count = 0;
+  int in_token = 0; // flag to indicate if currently in a token
+  
+  for (int i = 0; str[i] != '\0'; i++)
+  {
+    if (!space_char(str[i]))
     {
-      str = *token_terminator(*str);
-      counter++;
+      if (!in_token)
+      {
+	token_count++;
+	in_token = 1;
+      }
     }
-  return counter;
+    else
+      in_token = 0; // Set flag to indicate not being in a token
+  }
+  
+  return token_count;
 }
 
 /* Returns a freshly allocated new zero-terminated string 
@@ -63,16 +74,15 @@ int count_tokens(char *str)
 
 char *copy_str(char *inStr, short len)
 {
-  char *copied = (char *)malloc((len + 1) * sizeof(char));
+  char *copied = malloc((len + 1) * sizeof(char));
 
   if(copied == NULL)
-  {
     return NULL;
-  }
 
-  strncpy(copied, inStr, len);
+  for(short i=0; i<len; i++)
+    copied[i] = inStr[i];
+
   copied[len] = '\0';
-
   return copied;
 }
 
@@ -88,6 +98,7 @@ char *copy_str(char *inStr, short len)
 */
 char **tokenize(char* str)
 {
+  int token_count = count_tokens(str);
   char *token = str;
   char **tokens = malloc(sizeof(char *) * (token_count+1));
   
